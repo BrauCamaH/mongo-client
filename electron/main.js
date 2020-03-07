@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const { channels } = require('../src/shared/constants');
 const path = require('path');
 const url = require('url');
+const mongodb = require('../mongodb');
 let mainWindow;
 function createWindow() {
   const startUrl =
@@ -35,9 +36,10 @@ app.on('activate', function() {
   }
 });
 
-ipcMain.on(channels.APP_INFO, event => {
-  event.sender.send(channels.APP_INFO, {
-    appName: app.getName(),
-    appVersion: app.getVersion()
+mongodb.getDbs().then(dbs => {
+  ipcMain.on(channels.DBS, event => {
+    event.sender.send(channels.DBS, {
+      dbs: dbs
+    });
   });
 });
