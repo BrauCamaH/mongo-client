@@ -10,7 +10,8 @@ import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    boxShadow: 'none'
+    boxShadow: 'none',
+    background: '#4caf50'
   },
   flexGrow: {
     flexGrow: 1
