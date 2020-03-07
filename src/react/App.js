@@ -1,34 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import { channels } from '../shared/constants';
-const { ipcRenderer } = window;
+// import { channels } from '../shared/constants';
 
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import Routes from '../Routes';
+
+// const { ipcRenderer } = window;
+const browserHistory = createBrowserHistory();
 function App() {
-  const [appName, setAppName] = useState('');
-  const [appVersion, setAppVersion] = useState('');
+  // const [appName, setAppName] = useState('');
+  // const [appVersion, setAppVersion] = useState('');
 
-  useEffect(() => {
-    ipcRenderer.send(channels.APP_INFO);
-    ipcRenderer.on(channels.APP_INFO, (event, arg) => {
-      ipcRenderer.removeAllListeners(channels.APP_INFO);
-      const { appName, appVersion } = arg;
-      setAppName(appName);
-      setAppVersion(appVersion);
-    });
-  }, []);
+  // useEffect(() => {
+  //   ipcRenderer.send(channels.APP_INFO);
+  //   ipcRenderer.on(channels.APP_INFO, (event, arg) => {
+  //     ipcRenderer.removeAllListeners(channels.APP_INFO);
+  //     const { appName, appVersion } = arg;
+  //     setAppName(appName);
+  //     setAppVersion(appVersion);
+  //   });
+  // }, []);
 
   return (
-    <div className='App'>
-      <div className='App'>
-        <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <p>
-            {appName} version {appVersion}
-          </p>
-        </header>
-      </div>
-    </div>
+    <Router history={browserHistory}>
+      <Routes />
+    </Router>
   );
 }
 
