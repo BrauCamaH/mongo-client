@@ -1,18 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Divider, SwipeableDrawer } from '@material-ui/core';
-import {
-  Dashboard,
-  Receipt,
-  Fastfood,
-  EventSeat,
-  AssignmentInd,
-  People as PeopleIcon
-} from '@material-ui/icons';
+import { NavLink } from 'react-router-dom';
 
 import SidebarNav from './components/SidebarNav';
+
+import DbContext from '../../../../context/db-context';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -34,46 +29,23 @@ const useStyles = makeStyles(theme => ({
   },
   nav: {
     marginBottom: theme.spacing(2)
+  },
+  link: {
+    '&,&:hover,&:focus': {
+      color: 'inherit',
+      textDecoration: 'none',
+      display: 'block',
+      padding: '10px 20px'
+    }
   }
 }));
 
 const Sidebar = props => {
+  const context = useContext(DbContext);
+
   const { open, variant, onOpen, onClose, className, ...rest } = props;
 
   const classes = useStyles();
-
-  const pages = [
-    {
-      title: 'Dashboard',
-      href: '/dashboard',
-      icon: <Dashboard />
-    },
-    {
-      title: 'Users',
-      href: '/users',
-      icon: <PeopleIcon />
-    },
-    {
-      title: 'Orders',
-      href: '/orders',
-      icon: <Receipt />
-    },
-    {
-      title: 'Products',
-      href: '/categories',
-      icon: <Fastfood />
-    },
-    {
-      title: 'Tables',
-      href: '/tables',
-      icon: <EventSeat />
-    },
-    {
-      title: 'Clients',
-      href: '/clients',
-      icon: <AssignmentInd />
-    }
-  ];
 
   return (
     <SwipeableDrawer
@@ -85,8 +57,14 @@ const Sidebar = props => {
       variant={variant}
     >
       <div {...rest} className={clsx(classes.root, className)}>
+        <NavLink className={classes.link} to='/'>
+          Mongo-client
+        </NavLink>
         <Divider className={classes.divider} />
-        <SidebarNav className={classes.nav} pages={pages} />
+        <SidebarNav
+          className={classes.nav}
+          pages={context.dbs.map(db => ({ title: db.name, href: './' }))}
+        />
       </div>
     </SwipeableDrawer>
   );

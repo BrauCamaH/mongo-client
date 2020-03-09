@@ -119,12 +119,12 @@ const dangerCardHeader = {
 };
 const infoCardHeader = {
   color: '#fff',
-  background: `linear-gradient(60deg, #91ff35, ${infoColor})`,
+  background: `linear-gradient(60deg, ${infoColor}, #91ff35)`,
   ...infoBoxShadow
 };
 const primaryCardHeader = {
   color: '#fff',
-  background: `linear-gradient(60deg, #76ff03, ${primaryColor})`,
+  background: `linear-gradient(60deg, ${primaryColor}, #76ff03)`,
   ...primaryBoxShadow
 };
 const roseCardHeader = {
