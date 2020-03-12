@@ -36,10 +36,68 @@ app.on('activate', function() {
   }
 });
 
-mongodb.getDbs().then(dbs => {
-  ipcMain.on(channels.DBS, event => {
+ipcMain.on(channels.DBS, (event, args) => {
+  console.log(args);
+  mongodb.getDbs().then(dbs => {
     event.sender.send(channels.DBS, {
       dbs: dbs
     });
   });
+});
+
+ipcMain.on(channels.CREATE_COLLECTION, (event, args) => {
+  console.log(args);
+
+  const { database, collection } = args;
+  mongodb
+    .createCollection(database, collection)
+    .then(collection => {
+      event.sender.send(channels.CREATE_COLLECTION, {
+        status: 'ok',
+        message: `Created db : ${database}`
+      });
+    })
+    .catch(err => err);
+});
+
+//Query
+ipcMain.on(channels.QUERY, (event, data) => {
+  const { cb, args } = data;
+  mongodb
+    .queryDB(cb, args)
+    .then(res => {
+      event.sender.send(channels.QUERY, {
+        status: 'ok',
+        res: res
+      });
+    })
+    .catch(err => err);
+});
+
+//Query DB
+ipcMain.on(channels.QUERY_DB, (event, data) => {
+  const { db, cb, args } = data;
+  mongodb
+    .queryDB(db, cb, args)
+    .then(res => {
+      event.sender.send(channels.QUERY_DB, {
+        status: 'ok',
+        res: res
+      });
+    })
+    .catch(err => err);
+});
+
+//Query Collection
+ipcMain.on(channels.QUERY_COLLECTION, (event, data) => {
+  const { db, collection, cb, args } = data;
+  mongodb
+    .queryDB(db, collection, cb, args)
+    .then(res => {
+      event.sender.send(channels.QUERY_COLLECTION, {
+        status: 'ok',
+        res: res
+      });
+    })
+    .catch(err => err);
 });

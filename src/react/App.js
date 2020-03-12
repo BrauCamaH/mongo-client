@@ -12,11 +12,15 @@ function App() {
   const [dbs, setDbs] = useState([]);
 
   useEffect(() => {
-    send(channels.DBS, args => {
-      const { dbs } = args;
-      console.log(dbs);
-      setDbs(dbs.databases);
-    });
+    send(
+      channels.DBS,
+      args => {
+        const { dbs } = args;
+        console.log(dbs);
+        setDbs(dbs.databases);
+      },
+      { messsage: 'It works' }
+    );
   }, []);
 
   return (

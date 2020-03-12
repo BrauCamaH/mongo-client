@@ -1,10 +1,10 @@
 const { ipcRenderer } = window;
 
-const send = (channel, cb) => {
-  ipcRenderer.send(channel);
+const send = (channel, cb, data) => {
+  ipcRenderer.send(channel, data);
   ipcRenderer.on(channel, (event, args) => {
-    ipcRenderer.removeAllListeners(channel);
     cb(args);
+    ipcRenderer.removeAllListeners(channel);
   });
 };
 
