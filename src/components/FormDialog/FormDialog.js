@@ -36,7 +36,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function FormDialog(props) {
-  const { title, className, open, onClose, onSubmit, inputs, ...rest } = props;
+  const {
+    title,
+    submitButtonText,
+    className,
+    open,
+    onClose,
+    onSubmit,
+    inputs,
+    ...rest
+  } = props;
   const [formState, setFormState] = useState({
     values: {}
   });
@@ -103,7 +112,7 @@ export default function FormDialog(props) {
               Cancel
             </Button>
             <Button color='info' onClick={handleSubmit}>
-              Submit
+              {submitButtonText || 'Submit'}
             </Button>
           </div>
         </DialogActions>

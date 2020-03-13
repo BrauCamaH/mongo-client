@@ -2,7 +2,9 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const { channels } = require('../src/shared/constants');
 const path = require('path');
 const url = require('url');
-const mongodb = require('../mongodb');
+const mongodb = require('./mongodb');
+const DbControllers = require('./mongodb/db');
+
 let mainWindow;
 function createWindow() {
   const startUrl =
@@ -76,7 +78,17 @@ ipcMain.on(channels.QUERY, (event, data) => {
 
 //Query DB
 ipcMain.on(channels.QUERY_DB, (event, data) => {
-  const { db, cb, args } = data;
+  const { db, action, args } = data;
+
+  let cb = () => {};
+  switch (action) {
+    case 'DELETE':
+      cb = DbControllers.deleteDb;
+      break;
+    default:
+      break;
+  }
+
   mongodb
     .queryDB(db, cb, args)
     .then(res => {

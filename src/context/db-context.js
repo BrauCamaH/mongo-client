@@ -1,5 +1,8 @@
 import { createContext } from 'react';
 
 export default createContext({
-  dbs: []
+  dbs: [],
+  setDbs: dbs => {},
+  deleteDb: db => {},
+  addDbWithCollection: values => {}
 });

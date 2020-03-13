@@ -1,18 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 // material-ui components
 import { makeStyles } from '@material-ui/core/styles';
 // core components
-import Card from '../components/Card/Card';
-import CardBody from '../components/Card/CardBody';
-import CardHeader from '../components/Card/CardHeader';
-import Button from '../components/CustomButtons/Button';
 import DbContext from '../context/db-context';
-import Toolbar from '../components/Toolbar';
 import { Grid } from '@material-ui/core';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Toolbar,
+  AlertDialog
+} from '../components';
 import { cardTitle } from '../assets/jss/material-kit-react.js';
-
-import send from '../utils/ipcRendererWrapper';
-import { channels } from '../shared/constants';
 
 const styles = {
   cardTitle
@@ -24,18 +24,41 @@ const inputs = [
   { id: 1, name: 'database', text: 'Database' },
   { id: 2, name: 'collection', text: 'Collection' }
 ];
+
+const DbCard = props => {
+  const { name, sizeOnDisk, onDelete } = props;
+  const [openAlert, setOpenAlert] = useState(false);
+  const classes = useStyles();
+  return (
+    <>
+      <Card style={{ width: '20rem' }}>
+        <CardHeader color='primary'>{name}</CardHeader>
+        <CardBody>
+          <h4 className={classes.cardTitle}>Size on disk {sizeOnDisk}</h4>
+          <Button color='danger' onClick={() => setOpenAlert(true)}>
+            Delete
+          </Button>
+        </CardBody>
+      </Card>
+      <AlertDialog
+        title='Are you sure?'
+        contentText={`The action will delete the database ${name}`}
+        open={openAlert}
+        onClose={() => setOpenAlert(false)}
+        onAgree={() => {
+          onDelete(name);
+        }}
+        buttonText='Drop Database'
+      />
+    </>
+  );
+};
+
 const MainView = () => {
   const context = useContext(DbContext);
-  const classes = useStyles();
 
   const handleSubmit = values => {
-    send(
-      channels.CREATE_COLLECTION,
-      args => {
-        console.log(args);
-      },
-      values
-    );
+    context.addDbWithCollection(values);
   };
 
   return (
@@ -44,20 +67,16 @@ const MainView = () => {
         buttonText='Add DATABASE'
         inputs={inputs}
         onSubmit={handleSubmit}
+        dialogButtonText={'Create Database'}
       />
       <Grid container spacing={3}>
         {context.dbs.map((db, count) => (
           <Grid item key={count}>
-            <Card style={{ width: '20rem' }}>
-              <CardHeader color='primary'>{db.name}</CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>
-                  Size on disk {db.sizeOnDisk}
-                </h4>
-                <Button color='warning'>Edit</Button>
-                <Button color='danger'>Delete</Button>
-              </CardBody>
-            </Card>
+            <DbCard
+              name={db.name}
+              sizeOnDisk={db.sizeOnDisk}
+              onDelete={context.deleteDb}
+            />
           </Grid>
         ))}
       </Grid>

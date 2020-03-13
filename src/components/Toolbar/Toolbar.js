@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 const Toolbar = props => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const { className, buttonText, inputs, onSubmit } = props;
+  const { className, buttonText, dialogButtonText, inputs, onSubmit } = props;
   return (
     <div>
       <Button
@@ -31,6 +31,7 @@ const Toolbar = props => {
           setOpen(false);
         }}
         onSubmit={onSubmit}
+        submitButtonText={dialogButtonText || 'Submit'}
       />
     </div>
   );
