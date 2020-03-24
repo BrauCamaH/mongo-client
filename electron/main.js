@@ -48,8 +48,6 @@ ipcMain.on(channels.DBS, (event, args) => {
 });
 
 ipcMain.on(channels.CREATE_COLLECTION, (event, args) => {
-  console.log(args);
-
   const { database, collection } = args;
   mongodb
     .createCollection(database, collection)

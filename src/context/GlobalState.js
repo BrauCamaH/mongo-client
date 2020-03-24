@@ -46,7 +46,8 @@ const GlobalState = props => {
       value={{
         dbs: dbs,
         deleteDb: deleteDb,
-        addDbWithCollection: addDbWithCollection
+        addDbWithCollection: addDbWithCollection,
+        createCollection: addDbWithCollection
       }}
     >
       {props.children}

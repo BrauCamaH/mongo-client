@@ -52,7 +52,8 @@ const DbPage = ({ match }) => {
   } = match;
 
   const handleSubmit = values => {
-    context.addDbWithCollection(values);
+    context.createCollection({ database: name, collection: values.collection });
+    setCollections([...collections, { name: values.collection }]);
   };
 
   const getCollectionsWithDb = () => {
