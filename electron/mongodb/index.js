@@ -81,17 +81,4 @@ const getDbs = async () => {
   return databasesList;
 };
 
-// createCollection('hola', 'bienvenido').then(collection =>
-//   console.log(collection)
-// );
-
-// const insertOne = async (collection, args) => {
-//   const rs = await collection.insertOne(args);
-//   return rs;
-// };
-
-// queryCollection('example', 'collection1', insertOne, {
-//   name: 'braulio'
-// }).then(rs => console.log(rs));
-
 module.exports = { getDbs, createCollection, query, queryDB, queryCollection };

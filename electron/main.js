@@ -77,13 +77,16 @@ ipcMain.on(channels.QUERY, (event, data) => {
 });
 
 //Query DB
-ipcMain.on(channels.QUERY_DB, (event, data) => {
-  const { db, action, args } = data;
+ipcMain.on(channels.QUERY_DB, (event, req) => {
+  const { db, action, args } = req;
 
   let cb = () => {};
   switch (action) {
     case 'DELETE':
       cb = DbControllers.deleteDb;
+      break;
+    case 'GET_COLLECTIONS':
+      cb = DbControllers.getCollections;
       break;
     default:
       break;
@@ -91,10 +94,10 @@ ipcMain.on(channels.QUERY_DB, (event, data) => {
 
   mongodb
     .queryDB(db, cb, args)
-    .then(res => {
+    .then(data => {
       event.sender.send(channels.QUERY_DB, {
         status: 'ok',
-        res: res
+        data: data
       });
     })
     .catch(err => err);

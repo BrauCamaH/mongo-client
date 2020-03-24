@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import DbContext from './db-context';
-
 import send from '../utils/ipcRendererWrapper';
 import { channels } from '../shared/constants';
 
@@ -10,8 +9,8 @@ const GlobalState = props => {
   const getDbs = () => {
     send(
       channels.DBS,
-      args => {
-        const { dbs } = args;
+      res => {
+        const { dbs } = res;
         setDbs(dbs.databases);
       },
       { messsage: 'Databases added' }
@@ -41,6 +40,7 @@ const GlobalState = props => {
       { db: dbName, action: 'DELETE', args: {} }
     );
   };
+
   return (
     <DbContext.Provider
       value={{

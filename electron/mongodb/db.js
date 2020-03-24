@@ -16,6 +16,15 @@ exports.deleteDb = async (db, args) => {
   }
 };
 
+exports.getCollections = async (db, args) => {
+  try {
+    const collections = await db.listCollections().toArray();
+    return collections;
+  } catch (error) {
+    return error;
+  }
+};
+
 exports.createCollection = async (client, dbName, collectionName) => {
   const collection = await client.db(dbName).createCollection(collectionName);
   return collection;

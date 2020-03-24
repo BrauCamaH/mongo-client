@@ -63,7 +63,10 @@ const Sidebar = props => {
         <Divider className={classes.divider} />
         <SidebarNav
           className={classes.nav}
-          pages={context.dbs.map(db => ({ title: db.name, href: './' }))}
+          pages={context.dbs.map(db => ({
+            title: db.name,
+            href: `db/${db.name}`
+          }))}
         />
       </div>
     </SwipeableDrawer>
