@@ -5,5 +5,6 @@ export default createContext({
   setDbs: dbs => {},
   deleteDb: db => {},
   addDbWithCollection: values => {},
-  createCollection: collectionName => {}
+  createCollection: collectionName => {},
+  deleteCollection: (dbName, collectionName) => {}
 });

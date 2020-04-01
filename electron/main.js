@@ -86,6 +86,9 @@ ipcMain.on(channels.QUERY_DB, (event, req) => {
     case 'GET_COLLECTIONS':
       cb = DbControllers.getCollections;
       break;
+    case 'DELETE_COLLECTION':
+      cb = DbControllers.deleteCollection;
+      break;
     default:
       break;
   }

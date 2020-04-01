@@ -17,7 +17,7 @@ import { channels } from '../shared/constants';
 const inputs = [{ id: 1, name: 'collection', text: 'Collection name' }];
 
 const CollectionCard = props => {
-  const { name, onDelete } = props;
+  const { dbName, name, onDelete } = props;
   const [openAlert, setOpenAlert] = useState(false);
   return (
     <>
@@ -31,11 +31,11 @@ const CollectionCard = props => {
       </Card>
       <AlertDialog
         title='Are you sure?'
-        contentText={`The action will delete the database ${name}`}
+        contentText={`The action will delete the collection ${name}`}
         open={openAlert}
         onClose={() => setOpenAlert(false)}
         onAgree={() => {
-          onDelete(name);
+          onDelete(dbName, name);
         }}
         buttonText='Drop Database'
       />
@@ -54,6 +54,11 @@ const DbPage = ({ match }) => {
   const handleSubmit = values => {
     context.createCollection({ database: name, collection: values.collection });
     setCollections([...collections, { name: values.collection }]);
+  };
+
+  const handleDelete = (dbName, collectionName) => {
+    context.deleteCollection(dbName, collectionName);
+    getCollectionsWithDb();
   };
 
   const getCollectionsWithDb = () => {
@@ -79,7 +84,11 @@ const DbPage = ({ match }) => {
       <Grid container spacing={3}>
         {collections.map((coll, count) => (
           <Grid item key={count}>
-            <CollectionCard name={coll.name} onDelete={() => {}} />
+            <CollectionCard
+              dbName={name}
+              name={coll.name}
+              onDelete={handleDelete}
+            />
           </Grid>
         ))}
       </Grid>

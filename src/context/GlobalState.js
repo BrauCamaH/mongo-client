@@ -41,13 +41,22 @@ const GlobalState = props => {
     );
   };
 
+  const deleteCollection = (dbName, collectionName) => {
+    send(channels.QUERY_DB, res => {}, {
+      db: dbName,
+      action: 'DELETE_COLLECTION',
+      args: { collection: collectionName }
+    });
+  };
+
   return (
     <DbContext.Provider
       value={{
         dbs: dbs,
         deleteDb: deleteDb,
         addDbWithCollection: addDbWithCollection,
-        createCollection: addDbWithCollection
+        createCollection: addDbWithCollection,
+        deleteCollection: deleteCollection
       }}
     >
       {props.children}

@@ -29,3 +29,13 @@ exports.createCollection = async (client, dbName, collectionName) => {
   const collection = await client.db(dbName).createCollection(collectionName);
   return collection;
 };
+
+exports.deleteCollection = async (db, args) => {
+  try {
+    const { collection } = args;
+    const deleted = await db.collection(collection).drop();
+    return deleted;
+  } catch (error) {
+    return error;
+  }
+};
