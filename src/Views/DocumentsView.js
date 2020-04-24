@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -7,6 +8,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import send from '../utils/ipcRendererWrapper';
 import { channels, collection_actions } from '../shared/constants';
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -19,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DocumentsView = () => {
+  let query = useQuery();
   const classes = useStyles();
   const [documents, setDocuments] = useState([]);
 
@@ -51,20 +58,24 @@ const DocumentsView = () => {
         );
       },
       {
-        db: 'mongoose',
-        collection: 'students',
+        db: query.get('db'),
+        collection: query.get('collection'),
         action: collection_actions.FIND_DOCUMENTS,
         args: {},
       }
     );
-  }, []);
-  return documents.map((document, index) => (
+  }, [query]);
+
+  return (
     <>
-      <List key={index} component='nav' className={classes.root}>
-        {iterate(document)}
-      </List>
+      <p>{query.get('db') + '.' + query.get('collection')}</p>
+      {documents.map((document, index) => (
+        <List key={index} component='nav' className={classes.root}>
+          {iterate(document)}
+        </List>
+      ))}
     </>
-  ));
+  );
 };
 
 export default DocumentsView;

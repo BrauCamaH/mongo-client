@@ -32,7 +32,7 @@ const CollectionCard = (props) => {
             <Button color='danger' onClick={() => setOpenAlert(true)}>
               Delete
             </Button>
-            <NavLink to='/documents'>
+            <NavLink to={`/documents?db=${dbName}&&collection=${name}`}>
               <IconButton color='default'>
                 <ArrowForward />
               </IconButton>
