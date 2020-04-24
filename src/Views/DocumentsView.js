@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   listItem: {
-    height: '10px',
+    height: '15px',
   },
 }));
 
@@ -34,33 +34,70 @@ const DocumentsView = () => {
   const classes = useStyles();
   const [documents, setDocuments] = useState([]);
 
-  const iterate = (obj) => {
-    const items = [];
+  const iterate = (obj, list) => {
     let count = 0;
     Object.keys(obj).forEach((key) => {
-      if (typeof obj[key] === 'object') {
-        iterate(obj[key]);
+      if (list) {
+        list.push(
+          <ListItem key={count} className={classes.listItem}>
+            <ListItemText secondary={`${key} : ${obj[key].toString()}`} />
+          </ListItem>
+        );
       }
-      items.push(
-        <ListItem key={count} className={classes.listItem}>
-          <ListItemText secondary={`${key} : ${obj[key]}`} />
-        </ListItem>
-      );
+
+      if (typeof obj[key] === 'object') {
+        iterate(obj[key], list);
+      }
+      count++;
+    });
+  };
+
+  const getDocumentItems = (document) => {
+    const items = [];
+    let count = 0;
+    Object.keys(document).forEach((key) => {
+      switch (typeof document[key]) {
+        case 'object':
+          printObject(document[key], items, key);
+          break;
+
+        default:
+          items.push(
+            <ListItem key={count} className={classes.listItem}>
+              <ListItemText secondary={`${key} : ${document[key]}`} />
+            </ListItem>
+          );
+          break;
+      }
+
       count++;
     });
     return items;
+  };
+
+  const printObject = (obj, list, key) => {
+    if (obj.id) {
+      list.push(
+        <ListItem key={obj.id} className={classes.listItem}>
+          <ListItemText secondary={`${key} : ${toHexString(obj.id)}`} />
+        </ListItem>
+      );
+    } else {
+      list.push(
+        <ListItem key={obj.id} className={classes.listItem}>
+          <ListItemText secondary={`${key} : ${obj.toString()}`} />
+        </ListItem>
+      );
+      iterate(obj, list);
+    }
   };
 
   useEffect(() => {
     send(
       channels.QUERY_COLLECTION,
       (res) => {
-        setDocuments(
-          res.data.map((item) => ({
-            ...item,
-            _id: toHexString(item._id.id),
-          }))
-        );
+        setDocuments(res.data);
+        console.log(res.data);
       },
       {
         db: query.get('db'),
@@ -69,14 +106,14 @@ const DocumentsView = () => {
         args: {},
       }
     );
-  }, [query]);
+  }, []);
 
   return (
     <>
       <p>{query.get('db') + '.' + query.get('collection')}</p>
       {documents.map((document, index) => (
         <List key={index} component='nav' className={classes.root}>
-          {iterate(document)}
+          {getDocumentItems(document)}
         </List>
       ))}
     </>
