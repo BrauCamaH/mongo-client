@@ -24,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function toHexString(bytes) {
+  return Array.from(bytes, (byte) =>
+    ('00' + (byte & 0xff).toString(16)).slice(-2)
+  ).join('');
+}
 const DocumentsView = () => {
   let query = useQuery();
   const classes = useStyles();
@@ -31,15 +36,17 @@ const DocumentsView = () => {
 
   const iterate = (obj) => {
     const items = [];
+    let count = 0;
     Object.keys(obj).forEach((key) => {
       if (typeof obj[key] === 'object') {
         iterate(obj[key]);
       }
       items.push(
-        <ListItem className={classes.listItem} button>
+        <ListItem key={count} className={classes.listItem}>
           <ListItemText secondary={`${key} : ${obj[key]}`} />
         </ListItem>
       );
+      count++;
     });
     return items;
   };
@@ -48,12 +55,10 @@ const DocumentsView = () => {
     send(
       channels.QUERY_COLLECTION,
       (res) => {
-        console.log(res.data);
-
         setDocuments(
           res.data.map((item) => ({
             ...item,
-            _id: item._id,
+            _id: toHexString(item._id.id),
           }))
         );
       },
