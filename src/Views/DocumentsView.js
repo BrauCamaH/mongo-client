@@ -3,8 +3,9 @@ import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-
 import ListItemText from '@material-ui/core/ListItemText';
+
+import { Searchbar } from '../components';
 
 import send from '../utils/ipcRendererWrapper';
 import { channels, collection_actions } from '../shared/constants';
@@ -21,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     height: '15px',
+  },
+  fixed: {
+    margin: theme.spacing(1),
+    position: 'sticky',
+    top: 28,
+    zIndex: 200,
   },
 }));
 
@@ -106,16 +113,22 @@ const DocumentsView = () => {
         args: {},
       }
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <p>{query.get('db') + '.' + query.get('collection')}</p>
-      {documents.map((document, index) => (
-        <List key={index} component='nav' className={classes.root}>
-          {getDocumentItems(document)}
-        </List>
-      ))}
+      <div className={classes.fixed}>
+        <p>{query.get('db') + '.' + query.get('collection')}</p>
+        <Searchbar />
+      </div>
+      <div>
+        {documents.map((document, index) => (
+          <List key={index} component='nav' className={classes.root}>
+            {getDocumentItems(document)}
+          </List>
+        ))}
+      </div>
     </>
   );
 };
