@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { ListItem, ListItemText } from '@material-ui/core';
+import { ListItem, List } from '@material-ui/core';
 
 import Collapsible from 'react-collapsible';
 
@@ -12,12 +12,13 @@ function toHexString(bytes) {
 const useStyles = makeStyles((theme) => ({
   expansionPanel: {
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    margin: theme.spacing(1),
-    cursor: 'pointer',
+    cursor: 'default',
   },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
+  listItem: {
+    fontWeight: 'weight',
+    color: 'gray',
+    width: '100%',
+    cursor: 'default',
   },
 }));
 export default ({ document }) => {
@@ -25,8 +26,7 @@ export default ({ document }) => {
 
   const getDocumentItems = (document) => {
     const items = [];
-    let count = 0;
-    Object.keys(document).forEach((key) => {
+    Object.keys(document).forEach((key, index) => {
       switch (typeof document[key]) {
         case 'object':
           printObject(document[key], items, key);
@@ -34,14 +34,14 @@ export default ({ document }) => {
 
         default:
           items.push(
-            <ListItem key={count} className={classes.listItem}>
-              {`${key} : ${document[key]}`}
-            </ListItem>
+            <List key={index}>
+              <ListItem className={classes.listItem}>
+                {`${key} : ${document[key]}`}
+              </ListItem>
+            </List>
           );
           break;
       }
-
-      count++;
     });
     return items;
   };
@@ -49,21 +49,25 @@ export default ({ document }) => {
   const printObject = (obj, list, key) => {
     if (obj.id) {
       list.push(
-        <ListItem key={toHexString(obj.id)}>
-          <ListItemText secondary={`${key} : ${toHexString(obj.id)}`} />
-        </ListItem>
+        <List key={toHexString(obj.id)}>
+          <ListItem className={classes.listItem}>
+            {`${key} : ${toHexString(obj.id)}`}
+          </ListItem>
+        </List>
       );
     } else {
       list.push(
-        <div className={classes.expansionPanel}>
-          <ListItem>
-            <Collapsible
-              transitionTime={20}
-              trigger={`${key} : ${obj.toString()}`}
-            >
-              {getObjectItems(obj)}
-            </Collapsible>
-          </ListItem>
+        <div key={key} className={classes.expansionPanel}>
+          <List>
+            <ListItem className={classes.listItem}>
+              <Collapsible
+                transitionTime={20}
+                trigger={`${key} : ${obj.toString()}`}
+              >
+                {getObjectItems(obj)}
+              </Collapsible>
+            </ListItem>
+          </List>
         </div>
       );
     }
@@ -76,9 +80,11 @@ export default ({ document }) => {
         printObject(obj[key], list, key);
       } else {
         list.push(
-          <ListItem className={classes.heading}>
-            {`${key} : ${obj[key].toString()}`}
-          </ListItem>
+          <List key={index}>
+            <ListItem className={classes.listItem}>
+              {`${key} : ${obj[key].toString()}`}
+            </ListItem>
+          </List>
         );
       }
     });
