@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import MainView from './Views/MainView';
 import DbView from './Views/DbView';
+import DocumentsView from './Views/DocumentsView';
 
 import Layout from './layouts/Main';
 
@@ -12,7 +13,7 @@ const Routes = () => {
       <Route
         exact
         path='/'
-        render={matchProps => (
+        render={(matchProps) => (
           <Layout>
             <MainView {...matchProps} />
           </Layout>
@@ -21,9 +22,18 @@ const Routes = () => {
       <Route
         exact
         path='/db/:name'
-        render={matchProps => (
+        render={(matchProps) => (
           <Layout>
             <DbView {...matchProps} />
+          </Layout>
+        )}
+      />
+      <Route
+        exact
+        path='/documents'
+        render={(matchProps) => (
+          <Layout>
+            <DocumentsView {...matchProps} />
           </Layout>
         )}
       />

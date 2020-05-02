@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 // core components
 import DbContext from '../context/db-context';
 import { Grid } from '@material-ui/core';
@@ -8,25 +9,35 @@ import {
   CardHeader,
   Button,
   Toolbar,
-  AlertDialog
+  AlertDialog,
 } from '../components';
+
+import { ArrowForward } from '@material-ui/icons';
+import { IconButton } from '@material-ui/core';
 
 import send from '../utils/ipcRendererWrapper';
 import { channels } from '../shared/constants';
 
 const inputs = [{ id: 1, name: 'collection', text: 'Collection name' }];
 
-const CollectionCard = props => {
+const CollectionCard = (props) => {
   const { dbName, name, onDelete } = props;
   const [openAlert, setOpenAlert] = useState(false);
   return (
     <>
       <Card style={{ width: '20rem' }}>
-        <CardHeader color='primary'>{name}</CardHeader>
+        <CardHeader color='primary'>{name} </CardHeader>
         <CardBody>
-          <Button color='danger' onClick={() => setOpenAlert(true)}>
-            Delete
-          </Button>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button color='danger' onClick={() => setOpenAlert(true)}>
+              Delete
+            </Button>
+            <NavLink to={`/documents?db=${dbName}&&collection=${name}`}>
+              <IconButton color='default'>
+                <ArrowForward />
+              </IconButton>
+            </NavLink>
+          </div>
         </CardBody>
       </Card>
       <AlertDialog
@@ -48,10 +59,10 @@ const DbPage = ({ match }) => {
   const [collections, setCollections] = useState([]);
 
   const {
-    params: { name }
+    params: { name },
   } = match;
 
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     context.createCollection({ database: name, collection: values.collection });
     setCollections([...collections, { name: values.collection }]);
   };
@@ -64,7 +75,7 @@ const DbPage = ({ match }) => {
   const getCollectionsWithDb = () => {
     send(
       channels.QUERY_DB,
-      res => {
+      (res) => {
         setCollections(res.data);
       },
       { db: name, action: 'GET_COLLECTIONS', args: {} }
