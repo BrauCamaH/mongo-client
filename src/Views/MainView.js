@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 // material-ui components
 import { makeStyles } from '@material-ui/core/styles';
 // core components
@@ -10,22 +11,25 @@ import {
   CardHeader,
   Button,
   Toolbar,
-  AlertDialog
+  AlertDialog,
 } from '../components';
 import { cardTitle } from '../assets/jss/material-kit-react.js';
 
+import { ArrowForward } from '@material-ui/icons';
+import { IconButton } from '@material-ui/core';
+
 const styles = {
-  cardTitle
+  cardTitle,
 };
 
 const useStyles = makeStyles(styles);
 
 const inputs = [
   { id: 1, name: 'database', text: 'Database' },
-  { id: 2, name: 'collection', text: 'Collection' }
+  { id: 2, name: 'collection', text: 'Collection' },
 ];
 
-const DbCard = props => {
+const DbCard = (props) => {
   const { name, sizeOnDisk, onDelete } = props;
   const [openAlert, setOpenAlert] = useState(false);
   const classes = useStyles();
@@ -35,9 +39,16 @@ const DbCard = props => {
         <CardHeader color='primary'>{name}</CardHeader>
         <CardBody>
           <h4 className={classes.cardTitle}>Size on disk {sizeOnDisk}</h4>
-          <Button color='danger' onClick={() => setOpenAlert(true)}>
-            Delete
-          </Button>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button color='danger' onClick={() => setOpenAlert(true)}>
+              Delete
+            </Button>
+            <NavLink to={`/db?name=${name}`}>
+              <IconButton color='default'>
+                <ArrowForward />
+              </IconButton>
+            </NavLink>
+          </div>
         </CardBody>
       </Card>
       <AlertDialog
@@ -57,7 +68,7 @@ const DbCard = props => {
 const MainView = () => {
   const context = useContext(DbContext);
 
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     context.addDbWithCollection(values);
   };
 

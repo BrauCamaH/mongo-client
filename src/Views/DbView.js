@@ -18,6 +18,8 @@ import { IconButton } from '@material-ui/core';
 import send from '../utils/ipcRendererWrapper';
 import { channels } from '../shared/constants';
 
+import useQuery from '../hooks/useQuery';
+
 const inputs = [{ id: 1, name: 'collection', text: 'Collection name' }];
 
 const CollectionCard = (props) => {
@@ -54,13 +56,12 @@ const CollectionCard = (props) => {
   );
 };
 
-const DbPage = ({ match }) => {
+const DbPage = () => {
   const context = useContext(DbContext);
   const [collections, setCollections] = useState([]);
+  let query = useQuery();
 
-  const {
-    params: { name },
-  } = match;
+  const name = query.get('name');
 
   const handleSubmit = (values) => {
     context.createCollection({ database: name, collection: values.collection });
@@ -82,10 +83,11 @@ const DbPage = ({ match }) => {
     );
   };
 
-  useEffect(getCollectionsWithDb, []);
+  useEffect(getCollectionsWithDb, [name]);
 
   return (
     <div>
+      <p>{name}</p>
       <Toolbar
         buttonText='Add collection'
         inputs={inputs}

@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem } from '@material-ui/core';
 import Button from '../../../../../components/CustomButtons/Button';
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   item: {
     display: 'flex',
     paddingTop: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   button: {
     padding: '10px 8px',
@@ -18,11 +18,8 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'none',
     letterSpacing: 0,
     width: '100%',
-    fontWeight: theme.typography.fontWeightMedium
+    fontWeight: theme.typography.fontWeightMedium,
   },
-  active: {
-    color: 'black'
-  }
 }));
 
 const CustomRouterLink = forwardRef((props, ref) => (
@@ -31,18 +28,17 @@ const CustomRouterLink = forwardRef((props, ref) => (
   </div>
 ));
 
-const SidebarNav = props => {
+const SidebarNav = (props) => {
   const { pages, className, ...rest } = props;
 
   const classes = useStyles();
 
   return (
     <List {...rest} className={clsx(classes.root, className)}>
-      {pages.map(page => (
+      {pages.map((page) => (
         <ListItem className={classes.item} disableGutters key={page.title}>
           <Button
             color='info'
-            activeClassName={classes.active}
             className={classes.button}
             component={CustomRouterLink}
             to={page.href}
@@ -57,7 +53,7 @@ const SidebarNav = props => {
 
 SidebarNav.propTypes = {
   className: PropTypes.string,
-  pages: PropTypes.array.isRequired
+  pages: PropTypes.array.isRequired,
 };
 
 export default SidebarNav;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
+import { List } from '@material-ui/core';
 
 import { DocumentRenderer } from '../components';
 
@@ -10,9 +9,7 @@ import { Searchbar } from '../components';
 import send from '../utils/ipcRendererWrapper';
 import { channels, collection_actions } from '../shared/constants';
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
+import useQuery from '../hooks/useQuery';
 
 const useStyles = makeStyles((theme) => ({
   root: {

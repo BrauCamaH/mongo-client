@@ -9,38 +9,38 @@ import SidebarNav from './components/SidebarNav';
 
 import DbContext from '../../../../context/db-context';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   drawer: {
     width: 240,
     [theme.breakpoints.up('lg')]: {
       marginTop: 64,
-      height: 'calc(100% - 64px)'
-    }
+      height: 'calc(100% - 64px)',
+    },
   },
   root: {
     backgroundColor: theme.palette.white,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   divider: {
-    margin: theme.spacing(2, 0)
+    margin: theme.spacing(2, 0),
   },
   nav: {
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   link: {
     '&,&:hover,&:focus': {
       color: 'inherit',
       textDecoration: 'none',
       display: 'block',
-      padding: '10px 20px'
-    }
-  }
+      padding: '10px 20px',
+    },
+  },
 }));
 
-const Sidebar = props => {
+const Sidebar = (props) => {
   const context = useContext(DbContext);
 
   const { open, variant, onOpen, onClose, className, ...rest } = props;
@@ -63,9 +63,9 @@ const Sidebar = props => {
         <Divider className={classes.divider} />
         <SidebarNav
           className={classes.nav}
-          pages={context.dbs.map(db => ({
+          pages={context.dbs.map((db) => ({
             title: db.name,
-            href: `db/${db.name}`
+            href: `/db?name=${db.name}`,
           }))}
         />
       </div>
@@ -77,7 +77,7 @@ Sidebar.propTypes = {
   className: PropTypes.string,
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
-  variant: PropTypes.string.isRequired
+  variant: PropTypes.string.isRequired,
 };
 
 export default Sidebar;

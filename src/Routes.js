@@ -9,35 +9,25 @@ import Layout from './layouts/Main';
 
 const Routes = () => {
   return (
-    <Switch>
-      <Route
-        exact
-        path='/'
-        render={(matchProps) => (
-          <Layout>
-            <MainView {...matchProps} />
-          </Layout>
-        )}
-      />
-      <Route
-        exact
-        path='/db/:name'
-        render={(matchProps) => (
-          <Layout>
-            <DbView {...matchProps} />
-          </Layout>
-        )}
-      />
-      <Route
-        exact
-        path='/documents'
-        render={(matchProps) => (
-          <Layout>
-            <DocumentsView {...matchProps} />
-          </Layout>
-        )}
-      />
-    </Switch>
+    <Layout>
+      <Switch>
+        <Route
+          exact
+          path='/'
+          render={(matchProps) => <MainView {...matchProps} />}
+        />
+        <Route
+          exact
+          path='/db'
+          render={(matchProps) => <DbView {...matchProps} />}
+        />
+        <Route
+          exact
+          path='/documents'
+          render={(matchProps) => <DocumentsView {...matchProps} />}
+        />
+      </Switch>
+    </Layout>
   );
 };
 
