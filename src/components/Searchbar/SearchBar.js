@@ -69,7 +69,7 @@ const SearchInput = (props) => {
 
 SearchInput.propTypes = {
   className: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
+  onFind: PropTypes.func.isRequired,
   style: PropTypes.object,
 };
 
