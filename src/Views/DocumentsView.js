@@ -68,11 +68,20 @@ const DocumentsView = () => {
     }
   };
 
+  const handleValidation = (text) => {
+    try {
+      JSON.parse(text);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   return (
     <>
       <div className={classes.fixed}>
         <p>{query.get('db') + '.' + query.get('collection')}</p>
-        <Searchbar onFind={handleFind} />
+        <Searchbar onFind={handleFind} validator={handleValidation} />
       </div>
       <div>
         {documents.map((document, index) => (

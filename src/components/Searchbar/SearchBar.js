@@ -32,14 +32,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SearchInput = (props) => {
-  const { className, onChange, onFind, style, ...rest } = props;
+  const { className, onChange, onFind, style, validator, ...rest } = props;
 
   const classes = useStyles();
 
-  const [text, setText] = useState('');
+  const [text, setText] = useState('{}');
+  const [isValid, setIsValid] = useState(true);
 
   const handleText = (event) => {
     setText(event.target.value);
+    setIsValid(validator(event.target.value));
   };
   const handleFind = () => {
     onFind(text);
@@ -51,6 +53,7 @@ const SearchInput = (props) => {
         <Input
           {...rest}
           type='search'
+          value={text}
           className={classes.input}
           disableUnderline
           onChange={(e) => {
@@ -58,7 +61,12 @@ const SearchInput = (props) => {
           }}
         />
         <div className={classes.buttonContainer}>
-          <Button size='sm' color='info' onClick={handleFind}>
+          <Button
+            size='sm'
+            color='info'
+            onClick={handleFind}
+            disabled={!isValid}
+          >
             FIND
           </Button>
         </div>
