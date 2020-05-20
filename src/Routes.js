@@ -3,7 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import MainView from './Views/MainView';
 import DbView from './Views/DbView';
-import DocumentsView from './Views/DocumentsView';
+import CollectionView from './Views/CollectionView';
+import MultipleCollectionsView from './Views/MultipleCollectionsView';
 
 import Layout from './layouts/Main';
 
@@ -24,7 +25,12 @@ const Routes = () => {
         <Route
           exact
           path='/documents'
-          render={(matchProps) => <DocumentsView {...matchProps} />}
+          render={(matchProps) => <CollectionView {...matchProps} />}
+        />
+        <Route
+          exact
+          path='/multiple'
+          render={(matchProps) => <MultipleCollectionsView {...matchProps} />}
         />
       </Switch>
     </Layout>

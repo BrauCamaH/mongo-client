@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DocumentsView = () => {
+const CollectionView = () => {
   let query = useQuery();
   const classes = useStyles();
   const [documents, setDocuments] = useState([]);
@@ -81,7 +81,10 @@ const DocumentsView = () => {
     <>
       <div className={classes.fixed}>
         <p>{query.get('db') + '.' + query.get('collection')}</p>
-        <Searchbar onFind={handleFind} validator={handleValidation} />
+        <Searchbar
+          onFind={handleFind}
+          validator={handleValidation}
+        />
       </div>
       <div>
         {documents.map((document, index) => (
@@ -94,4 +97,4 @@ const DocumentsView = () => {
   );
 };
 
-export default DocumentsView;
+export default CollectionView;
