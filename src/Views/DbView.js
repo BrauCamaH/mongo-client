@@ -93,6 +93,9 @@ const DbPage = () => {
         inputs={inputs}
         onSubmit={handleSubmit}
         dialogButtonText={'Create collection'}
+        optionalButton
+        optionalButtonText='Two Collections'
+        optionalButtonLink={`multiple?db=${name}`}
       />
       <Grid container spacing={3}>
         {collections.map((coll, count) => (
