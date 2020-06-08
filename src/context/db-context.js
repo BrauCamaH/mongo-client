@@ -7,4 +7,5 @@ export default createContext({
   addDbWithCollection: (values) => {},
   createCollection: (collectionName) => {},
   deleteCollection: (dbName, collectionName) => {},
+  createBackup: (dbName) => {},
 });

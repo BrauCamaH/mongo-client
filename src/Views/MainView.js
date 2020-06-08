@@ -15,7 +15,7 @@ import {
 } from '../components';
 import { cardTitle } from '../assets/jss/material-kit-react.js';
 
-import { ArrowForward } from '@material-ui/icons';
+import { ArrowForward, Backup } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
 
 const styles = {
@@ -30,9 +30,10 @@ const inputs = [
 ];
 
 const DbCard = (props) => {
-  const { name, sizeOnDisk, onDelete } = props;
+  const { name, sizeOnDisk, onDelete, onBackup } = props;
   const [openAlert, setOpenAlert] = useState(false);
   const classes = useStyles();
+
   return (
     <>
       <Card style={{ width: '20rem' }}>
@@ -43,11 +44,16 @@ const DbCard = (props) => {
             <Button color='danger' onClick={() => setOpenAlert(true)}>
               Delete
             </Button>
-            <NavLink to={`/db?name=${name}`}>
-              <IconButton color='default'>
-                <ArrowForward />
+            <div>
+              <IconButton onClick={onBackup}>
+                <Backup />
               </IconButton>
-            </NavLink>
+              <NavLink to={`/db?name=${name}`}>
+                <IconButton color='default'>
+                  <ArrowForward />
+                </IconButton>
+              </NavLink>
+            </div>
           </div>
         </CardBody>
       </Card>
@@ -87,6 +93,7 @@ const MainView = () => {
               name={db.name}
               sizeOnDisk={db.sizeOnDisk}
               onDelete={context.deleteDb}
+              onBackup={()=>{context.createBackup(db.name)}}
             />
           </Grid>
         ))}

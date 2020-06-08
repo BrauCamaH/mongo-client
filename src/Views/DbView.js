@@ -25,6 +25,7 @@ const inputs = [{ id: 1, name: 'collection', text: 'Collection name' }];
 const CollectionCard = (props) => {
   const { dbName, name, onDelete } = props;
   const [openAlert, setOpenAlert] = useState(false);
+
   return (
     <>
       <Card style={{ width: '20rem' }}>
@@ -34,11 +35,11 @@ const CollectionCard = (props) => {
             <Button color='danger' onClick={() => setOpenAlert(true)}>
               Delete
             </Button>
-            <NavLink to={`/documents?db=${dbName}&&collection=${name}`}>
-              <IconButton color='default'>
-                <ArrowForward />
-              </IconButton>
-            </NavLink>
+              <NavLink to={`/documents?db=${dbName}&&collection=${name}`}>
+                <IconButton color='default'>
+                  <ArrowForward />
+                </IconButton>
+              </NavLink>
           </div>
         </CardBody>
       </Card>

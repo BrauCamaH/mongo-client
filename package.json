@@ -26,6 +26,7 @@
     "clsx": "^1.1.0",
     "history": "^4.10.1",
     "mongodb": "^3.5.4",
+    "mongodb-backup": "^1.6.9",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-collapsible": "^2.7.0",

@@ -3,13 +3,13 @@ import DbContext from './db-context';
 import send from '../utils/ipcRendererWrapper';
 import { channels } from '../shared/constants';
 
-const GlobalState = props => {
+const GlobalState = (props) => {
   const [dbs, setDbs] = useState([]);
 
   const getDbs = () => {
     send(
       channels.DBS,
-      res => {
+      (res) => {
         const { dbs } = res;
         setDbs(dbs.databases);
       },
@@ -18,21 +18,21 @@ const GlobalState = props => {
   };
   useEffect(getDbs, []);
 
-  const addDbWithCollection = values => {
+  const addDbWithCollection = (values) => {
     send(
       channels.CREATE_COLLECTION,
-      res => {
+      (res) => {
         getDbs();
       },
       values
     );
   };
 
-  const deleteDb = dbName => {
+  const deleteDb = (dbName) => {
     send(
       channels.QUERY_DB,
-      res => {
-        const updatedItems = dbs.filter(db => {
+      (res) => {
+        const updatedItems = dbs.filter((db) => {
           return db.name !== dbName;
         });
         setDbs(updatedItems);
@@ -42,10 +42,16 @@ const GlobalState = props => {
   };
 
   const deleteCollection = (dbName, collectionName) => {
-    send(channels.QUERY_DB, res => {}, {
+    send(channels.QUERY_DB, (res) => {}, {
       db: dbName,
       action: 'DELETE_COLLECTION',
-      args: { collection: collectionName }
+      args: { collection: collectionName },
+    });
+  };
+
+  const createBackup = (dbName) => {
+    send(channels.BACKUP_DB, (res) => {}, {
+      db: dbName,
     });
   };
 
@@ -56,7 +62,8 @@ const GlobalState = props => {
         deleteDb: deleteDb,
         addDbWithCollection: addDbWithCollection,
         createCollection: addDbWithCollection,
-        deleteCollection: deleteCollection
+        deleteCollection: deleteCollection,
+        createBackup: createBackup,
       }}
     >
       {props.children}
