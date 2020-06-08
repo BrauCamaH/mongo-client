@@ -11,28 +11,28 @@ import {
   DialogTitle,
   DialogActions,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from '@material-ui/core';
 
 import EditIcon from '@material-ui/icons/Clear';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   row: {
     height: '42px',
     display: 'flex',
     alignItems: 'center',
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500]
+    color: theme.palette.grey[500],
   },
   cancelButton: {
-    marginRight: theme.spacing(2)
-  }
+    marginRight: theme.spacing(2),
+  },
 }));
 
 export default function FormDialog(props) {
@@ -44,25 +44,26 @@ export default function FormDialog(props) {
     onClose,
     onSubmit,
     inputs,
+    component: Component,
     ...rest
   } = props;
   const [formState, setFormState] = useState({
-    values: {}
+    values: {},
   });
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
   const classes = useStyles();
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     event.persist();
 
-    setFormState(formState => ({
+    setFormState((formState) => ({
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: event.target.value
-      }
+        [event.target.name]: event.target.value,
+      },
     }));
   };
 
@@ -95,7 +96,7 @@ export default function FormDialog(props) {
         </DialogTitle>
         <DialogContent>
           {inputs &&
-            inputs.map(input => (
+            inputs.map((input) => (
               <TextField
                 type='text'
                 key={input.id}
@@ -105,6 +106,7 @@ export default function FormDialog(props) {
                 fullWidth
               />
             ))}
+          {Component}
         </DialogContent>
         <DialogActions>
           <div>

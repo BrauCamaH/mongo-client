@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { List } from '@material-ui/core';
+import ReactJsonView from 'react-json-view';
 
-import { DocumentRenderer } from '../components';
-
-import { Searchbar } from '../components';
+import { DocumentRenderer, Searchbar, Button, FormDialog } from '../components';
 
 import send from '../utils/ipcRendererWrapper';
 import { channels, collection_actions } from '../shared/constants';
@@ -23,15 +22,18 @@ const useStyles = makeStyles((theme) => ({
   fixed: {
     margin: theme.spacing(1),
     position: 'sticky',
-    top: 28,
+    top: 0,
     zIndex: 200,
   },
 }));
+
+const inputs = [{ id: 1, name: 'view', text: 'View Name' }];
 
 const CollectionView = () => {
   let query = useQuery();
   const classes = useStyles();
   const [documents, setDocuments] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     send(
@@ -77,14 +79,23 @@ const CollectionView = () => {
     }
   };
 
+  const handleViewCreation = () => {};
+
   return (
     <>
       <div className={classes.fixed}>
-        <p>{query.get('db') + '.' + query.get('collection')}</p>
-        <Searchbar
-          onFind={handleFind}
-          validator={handleValidation}
-        />
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <p>{query.get('db') + '.' + query.get('collection')}</p>
+          <Button
+            color='info'
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            ADD VIEW
+          </Button>
+        </div>
+        <Searchbar onFind={handleFind} validator={handleValidation} />
       </div>
       <div>
         {documents.map((document, index) => (
@@ -93,6 +104,27 @@ const CollectionView = () => {
           </List>
         ))}
       </div>
+      <FormDialog
+        open={open}
+        inputs={inputs}
+        onClose={() => {
+          setOpen(false);
+        }}
+        component={
+          <div>
+            <h5>Agregation Pipeline</h5>
+            <ReactJsonView
+              style={{ width: '20rem', height: '20rem' }}
+              src={[]}
+              onAdd={() => {}}
+              onEdit={() => {}}
+              onDelete={() => {}}
+            />
+          </div>
+        }
+        onSubmit={handleViewCreation}
+        submitButtonText='Create View'
+      />
     </>
   );
 };

@@ -47,6 +47,9 @@ export default ({ document }) => {
   };
 
   const printObject = (obj, list, key) => {
+    if(!obj){
+      return
+    }
     if (obj.id) {
       list.push(
         <List key={toHexString(obj.id)}>
